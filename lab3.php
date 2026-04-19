@@ -119,7 +119,10 @@
         }
     }
 }
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+$currency = "$";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $name = $_POST["name"];
     $balance = $_POST["balance"];
@@ -129,7 +132,6 @@
     $atm = new ATM($name, $balance);
 
     echo "<hr>";
-
     echo "<h3>Transaction Result</h3>";
 
     echo "<b>Account:</b> " . $atm->getAccountName() . "<br><br>";
@@ -137,28 +139,23 @@
     if ($action == "check") {
 
         echo "<b>Action:</b> Balance Check<br><br>";
-        echo "<b>Current Balance:</b> " . $atm->getBalance();
+        echo "<b>Current Balance:</b> " . $currency . $atm->getBalance();
 
     } elseif ($action == "deposit") {
 
-        $newBalance = $atm->deposit($amount);
-
-        echo "<b>Action:</b> Deposit of " . $amount . "<br><br>";
-        echo "<b>New Balance:</b> " . $newBalance;
+        echo "<b>Action:</b> Deposit of " . $currency . $amount . "<br><br>";
+        echo "<b>New Balance:</b> " . $currency . $atm->deposit($amount);
 
     } elseif ($action == "withdraw") {
+
+        echo "<b>Action:</b> Withdrawal of " . $currency . $amount . "<br><br>";
 
         $result = $atm->withdraw($amount);
 
         if ($result == "insufficient") {
-
-            echo "<b>Action:</b> Withdrawal of " . $amount . "<br><br>";
             echo "<b>New Balance:</b> Insufficient Balance";
-
         } else {
-
-            echo "<b>Action:</b> Withdrawal of " . $amount . "<br><br>";
-            echo "<b>New Balance:</b> " . $result;
+            echo "<b>New Balance:</b> " . $currency . $result;
         }
     }
 }
